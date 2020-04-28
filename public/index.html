@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<html>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.3/p5.min.js"></script>
+  <script src="./rita.min.js"></script>
+  <script>
+	var lines, markov, data, x = 160, y = 240;
+
+	function preload() {
+
+	  data = loadStrings('../blog.txt');
+	}
+
+	function setup() {
+
+	  createCanvas(1000, 1000);
+	  textFont('times');
+	  textSize(32);
+	  textAlign(LEFT);
+
+	  lines = [" "];
+
+	  // create a markov model w' n=4
+	  markov = new RiMarkov(2);
+
+	  // load text into the model
+	  markov.loadText(data.join(' '));
+
+
+	  drawText();
+	}
+
+	function draw(){
+		if (millis()%15000<50){
+			repeat();
+		}
+	}
+
+	function drawText() {
+
+	  background(250);
+	  text(lines.join(' '), x, y, 800, 800);
+	}
+
+	function repeat() {
+
+	  x = y = 50;
+	  lines = markov.generateSentences(10);
+	  drawText();
+	}
+</script>
+</head>
+<body>
+<p></p>
+</body>
+</html>
